@@ -2,8 +2,10 @@ package com.github.hafixion;
 
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
+import java.nio.file.Path;
 
 public class FeudalismMain extends JavaPlugin {
+    public Path datafolder = this.getDataFolder().toPath();
 
     @Override
     public void onEnable() {

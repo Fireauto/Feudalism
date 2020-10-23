@@ -13,12 +13,13 @@ public class FileUtils {
      * @return the new file
      */
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    public File createFile(String filename, Path path) {
+    public static File createYAMLFile(String filename, Path path) {
         // if path doesn't exist
+        String fileyamlname = filename + ".yml";
         if (!path.getParent().toFile().exists()) {
             path.toFile().mkdirs();
         }
-        File file = new File(path.toString(), filename);
+        File file = new File(path.toString(), fileyamlname);
         // if file doesn't exist
         if (!file.exists()) {
             try {
