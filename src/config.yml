@@ -7,4 +7,9 @@
 #       \|__|     \|_______|    \|_______|    \|_______|    \|__|\|__|    \|_______|    \|__|   |\_________\    \|__|     \|__|
 # Adding Complex Dynamic War to Towny. Created by Hafixion and contributed to by zydde.
 
-
+# ---------------------------------------
+#             Ruined Towns
+# ----------------------------------------
+ruin-enabled: true
+enable-permisisons: true
+time-till-expiration: 86400000
