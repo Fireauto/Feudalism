@@ -1,6 +1,7 @@
-package com.github.hafixion.Modules.Ruin;
+package com.github.hafixion.Modules.Ruin.Events;
 
 import com.github.hafixion.FeudalismMain;
+import com.github.hafixion.Modules.Ruin.RuinBase;
 import com.github.hafixion.Utils.ChatInfo;
 import com.github.hafixion.Utils.FileUtils;
 import com.palmergames.bukkit.towny.command.TownyAdminCommand;
@@ -70,6 +71,7 @@ public class RuinEvent extends Event implements Cancellable {
         town.getMayor().setTitle("Ruined Mayor ");
         town.setPublic(false);
         town.setOpen(false);
+        town.setPVP(true);
         Resident resident = town.getMayor();
         // enable permission
         if (FeudalismMain.plugin.getConfig().getBoolean("enable-permissions")) {

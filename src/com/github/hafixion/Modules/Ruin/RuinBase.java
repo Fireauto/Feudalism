@@ -20,12 +20,12 @@ import java.util.Arrays;
 import java.util.List;
 
 public class RuinBase {
-    protected static Path database = Paths.get("plugins/Feudalism/data/ruinedtowns");
+    public static Path database = Paths.get("plugins/Feudalism/data/ruinedtowns");
     protected static List<File> datalist = Arrays.asList(database.toFile().listFiles());
     private static final TownyAdminCommand adminCommand = new TownyAdminCommand(null);
 
     // getting the file of the ruined town
-    public File getFile(Town town) {
+    public static File getFile(Town town) {
         File result = null;
         String filename = town.getUuid().toString() + ".yml";
         for (File file : datalist) {
@@ -35,7 +35,7 @@ public class RuinBase {
     }
 
     // getting if the town is ruined function
-    public boolean isRuined(Town town) {
+    public static boolean isRuined(Town town) {
         boolean result = false;
         if (getFile(town) != null) result = true;
         return result;

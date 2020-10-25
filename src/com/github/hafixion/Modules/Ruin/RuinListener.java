@@ -1,6 +1,7 @@
 package com.github.hafixion.Modules.Ruin;
 
 import com.github.hafixion.FeudalismMain;
+import com.github.hafixion.Modules.Ruin.Events.RuinEvent;
 import com.palmergames.bukkit.towny.event.PreDeleteTownEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
