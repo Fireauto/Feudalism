@@ -1,6 +1,7 @@
 package com.github.hafixion;
 
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -10,7 +11,7 @@ public class FeudalismMain extends JavaPlugin {
     public Path datafolder = this.getDataFolder().toPath();
     public static Plugin plugin;
     public static void setPlugin(Plugin plugin) {FeudalismMain.plugin = plugin;}
-
+    public static FileConfiguration config = plugin.getConfig();
     @Override
     public void onEnable() {
         // if towny is loaded then enable the plugin

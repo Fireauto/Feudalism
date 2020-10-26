@@ -11,5 +11,10 @@
 #             Ruined Towns
 # ----------------------------------------
 ruin-enabled: true
+# self-explanatory
 enable-permisisons: true
+# whether or not all permissions are enabled in ruined towns
 time-till-expiration: 86400000
+# how much time it'll take until a ruined town is considered expired
+nation-reclaiming-permission: towny.command.nation.add
+# the permission required to request that someone reclaim a town for the nation

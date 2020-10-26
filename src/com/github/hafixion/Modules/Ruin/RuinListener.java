@@ -2,7 +2,9 @@ package com.github.hafixion.Modules.Ruin;
 
 import com.github.hafixion.FeudalismMain;
 import com.github.hafixion.Modules.Ruin.Events.RuinEvent;
+import com.github.hafixion.Utils.ChatInfo;
 import com.palmergames.bukkit.towny.event.PreDeleteTownEvent;
+import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
@@ -16,6 +18,19 @@ public class RuinListener implements Listener {
                 RuinEvent ruinEvent = new RuinEvent(event.getTown());
                 if (!ruinEvent.cancelled) FeudalismMain.plugin.getServer().getPluginManager().callEvent(ruinEvent);
             }
+        }
+    }
+
+    @SuppressWarnings("AccessStaticViaInstance")
+    @EventHandler
+    // when a town falls into ruin, ask the king to set a new mayor
+    public static void onTownRuin(RuinEvent event) {
+        try {
+            if (event.getTown().hasNation() && event.getTown().getNation().getKing().getPlayer().isOnline()) {
+                event.getTown().getNation().getKing().getPlayer().sendMessage(ChatInfo.color("&b" + event.getTown() + " has fallen into ruin, you should assign a mayor before it disappears."));
+            }
+        } catch (NotRegisteredException e) {
+            e.printStackTrace();
         }
     }
 }
