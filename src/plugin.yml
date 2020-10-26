@@ -1,6 +1,13 @@
 name: Feudalism
 main: com.github.hafixion.FeudalismMain
+author: Hafixion
 version: 0.0.1
 api-version: 1.16
 depend:
   - Towny
+
+commands:
+  feudalism:
+    description: The base Feudalism command
+    aliases: fd
+

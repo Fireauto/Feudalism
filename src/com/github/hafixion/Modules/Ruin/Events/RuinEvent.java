@@ -9,6 +9,7 @@ import com.palmergames.bukkit.towny.exceptions.TownyException;
 import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.Town;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
@@ -20,19 +21,19 @@ import java.io.IOException;
 public class RuinEvent extends Event implements Cancellable {
     private static Town town;
     private static File file;
-    private static YamlConfiguration filedata;
     public boolean cancelled;
+    private static HandlerList handlers = new HandlerList();
     private static final TownyAdminCommand adminCommand = new TownyAdminCommand(null);
 
     // bukkit requirements for event
     @Override
     public HandlerList getHandlers() {
-        return null;
+        return handlers;
     }
 
     @Override
     public boolean isCancelled() {
-        return false;
+        return cancelled;
     }
 
     @Override
@@ -42,16 +43,16 @@ public class RuinEvent extends Event implements Cancellable {
 
     // when the event is called create the file and save the values.
     public RuinEvent(Town town) {
-        // file creation process
-        file = FileUtils.createYAMLFile(town.getUuid().toString(), RuinBase.database);
-        filedata.set("uuid", town.getUuid().toString());
-        filedata.set("time", System.currentTimeMillis());
         try {
+            // file creation process
+            file = new File(RuinBase.database.toString(), town.getUuid().toString() + ".yml");
+            YamlConfiguration filedata = new YamlConfiguration();
+            filedata.set("uuid", file.getName());
+            filedata.set("time", System.currentTimeMillis());
             filedata.save(file);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        // actual town editing
         // nation stuff
         if (town.isCapital()) {
             try {
@@ -113,7 +114,7 @@ public class RuinEvent extends Event implements Cancellable {
         RuinEvent.town = town;
     }
 
-    public static YamlConfiguration getFiledata() {
-        return filedata;
+    public static HandlerList getHandlerList() {
+        return handlers;
     }
 }

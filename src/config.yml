@@ -5,6 +5,7 @@
 #     \ \  \_|  \ \  \_|\ \   \ \  \\\  \   \ \  \_\\ \   \ \  \ \  \   \ \  \____    \ \  \   \|____|\  \    \ \  \    \ \  \
 #      \ \__\    \ \_______\   \ \_______\   \ \_______\   \ \__\ \__\   \ \_______\   \ \__\    ____\_\  \    \ \__\    \ \__\
 #       \|__|     \|_______|    \|_______|    \|_______|    \|__|\|__|    \|_______|    \|__|   |\_________\    \|__|     \|__|
+
 # Adding Complex Dynamic War to Towny. Created by Hafixion and contributed to by zydde.
 
 # ---------------------------------------
@@ -12,7 +13,11 @@
 # ----------------------------------------
 ruin-enabled: true
 # self-explanatory
-enable-permisisons: true
+nation-reclaiming-enabled: true
+# whether or not nations can reclaim towns
+resident-reclaiming-enabled: true
+# whether or not residents can reclaim towns
+enable-permissisons: true
 # whether or not all permissions are enabled in ruined towns
 time-till-expiration: 86400000
 # how much time it'll take until a ruined town is considered expired

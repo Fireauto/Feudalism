@@ -21,14 +21,13 @@ import java.util.List;
 
 public class RuinBase {
     public static Path database = Paths.get("plugins/Feudalism/data/ruinedtowns");
-    protected static List<File> datalist = Arrays.asList(database.toFile().listFiles());
     private static final TownyAdminCommand adminCommand = new TownyAdminCommand(null);
 
     // getting the file of the ruined town
     public static File getFile(Town town) {
         File result = null;
         String filename = town.getUuid().toString() + ".yml";
-        for (File file : datalist) {
+        for (File file : Arrays.asList(database.toFile().listFiles())) {
             if (file.getName().equals(filename)) result = file;
         }
         return result;
@@ -44,7 +43,7 @@ public class RuinBase {
     // purges towns older than whatever value is specificed in config
     public static void ClearExpiredRuinedTowns() {
         YamlConfiguration config = new YamlConfiguration();
-        for (File file : datalist) {
+        for (File file : Arrays.asList(database.toFile().listFiles())) {
             try {
                 config.load(file);
                 if (config.getLong("time") - System.currentTimeMillis() >= FeudalismMain.plugin.getConfig().getLong("time-till-expiration")) {

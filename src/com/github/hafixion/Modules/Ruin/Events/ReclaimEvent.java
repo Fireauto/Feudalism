@@ -16,19 +16,22 @@ import java.io.File;
 public class ReclaimEvent extends Event implements Cancellable {
     public Resident resident;
     public Town town;
+    private static HandlerList handlers = new HandlerList();
+    private static boolean cancelled;
+
     @Override
     public boolean isCancelled() {
-        return false;
+        return cancelled;
     }
 
     @Override
     public void setCancelled(boolean b) {
-
+        cancelled = b;
     }
 
     @Override
     public HandlerList getHandlers() {
-        return null;
+        return handlers;
     }
 
     // the actual event
@@ -51,7 +54,7 @@ public class ReclaimEvent extends Event implements Cancellable {
                 RuinBase.ClearNPCs();
                 town.setBoard(resident.getTown().getName() + " has returned under the leadership of " + resident.getName());
                 town.setPVP(false);
-                Bukkit.broadcastMessage(ChatInfo.color("&c" + town.getName() + " has returned under the leadership of " + resident.getName()));
+                Bukkit.broadcastMessage(ChatInfo.color("&b" + town.getName() + " has returned under the leadership of " + resident.getName()));
             }
         } catch (TownyException e) {
             e.printStackTrace();
@@ -72,5 +75,9 @@ public class ReclaimEvent extends Event implements Cancellable {
 
     public void setTown(Town town) {
         this.town = town;
+    }
+
+    public static HandlerList getHandlerList() {
+        return handlers;
     }
 }

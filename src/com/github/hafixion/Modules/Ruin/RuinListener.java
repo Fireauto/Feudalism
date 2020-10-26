@@ -17,8 +17,8 @@ public class RuinListener implements Listener {
                 event.setCancelled(true);
                 RuinEvent ruinEvent = new RuinEvent(event.getTown());
                 if (!ruinEvent.cancelled) FeudalismMain.plugin.getServer().getPluginManager().callEvent(ruinEvent);
-            }
-        }
+            } else {event.setCancelled(false);}
+        } else {event.setCancelled(false);}
     }
 
     @SuppressWarnings("AccessStaticViaInstance")
