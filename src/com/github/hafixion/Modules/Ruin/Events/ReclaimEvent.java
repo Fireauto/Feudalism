@@ -38,6 +38,11 @@ public class ReclaimEvent extends Event implements Cancellable {
     public ReclaimEvent(Town town, Resident resident) {
         try {
             if (RuinBase.isRuined(town)) {
+                // if they aren't part of that town
+                if (resident.getTown() != town) {
+                    resident.removeTown();
+                    resident.setTown(town);
+                }
                 File file = RuinBase.getFile(town);
                 file.delete();
                 town.setMayor(resident);
