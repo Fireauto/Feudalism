@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 public class FileUtils {
+    public static File warlist = new File("plugins/Feudalism/data/ruinedtowns", "warlist.yml");
 
     /**
      * Easy way to create a file
