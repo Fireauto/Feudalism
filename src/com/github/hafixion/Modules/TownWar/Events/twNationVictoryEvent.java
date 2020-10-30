@@ -2,6 +2,7 @@ package com.github.hafixion.Modules.TownWar.Events;
 
 import com.github.hafixion.Modules.TownWar.TownWarBase;
 import com.github.hafixion.Utils.ChatInfo;
+import com.github.hafixion.Utils.WarlistUtils;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Town;
 import org.bukkit.Bukkit;
@@ -22,6 +23,10 @@ public class twNationVictoryEvent extends Event {
         File file = TownWarBase.getWarFile(nation.getUuid(), town.getUuid());
         file.delete();
 
+        for (Town town1 : nation.getTowns()) {
+            WarlistUtils.RemoveTownfromWarList(town1.getUuid());
+        }
+        WarlistUtils.RemoveTownfromWarList(town.getUuid());
         // to be continued once i add wargoals and rebellions and stuff
     }
 
