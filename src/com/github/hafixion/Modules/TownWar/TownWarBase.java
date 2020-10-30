@@ -28,7 +28,7 @@ public class TownWarBase {
             e.printStackTrace();
         }
 
-        List<String> wars = new ArrayList<>(Arrays.asList(wardata.getString("wars").split("-")));
+        List<String> wars = new ArrayList<>(Arrays.asList(wardata.getString("wars").split("_")));
          if (wars.contains(town.getUuid().toString())) {
              result = true;
          }
@@ -45,7 +45,7 @@ public class TownWarBase {
             e.printStackTrace();
         }
 
-        List<String> wars = new ArrayList<>(Arrays.asList(wardata.getString("nations").split("-")));
+        List<String> wars = new ArrayList<>(Arrays.asList(wardata.getString("nations").split("_")));
         if (wars.contains(nation.getUuid().toString())) {
             result = true;
         }
@@ -61,10 +61,10 @@ public class TownWarBase {
             e.printStackTrace();
         }
 
-        List<String> towns = new ArrayList<>(Arrays.asList(wardata.getString("towns").split("-")));
+        List<String> towns = new ArrayList<>(Arrays.asList(wardata.getString("towns").split("_")));
         if (!towns.contains(town.toString())) {
             towns.add(town.toString());
-            wardata.set("towns", String.join("-", towns));
+            wardata.set("towns", String.join("_", towns));
         }
     }
 
@@ -77,10 +77,10 @@ public class TownWarBase {
             e.printStackTrace();
         }
 
-        List<String> towns = new ArrayList<>(Arrays.asList(wardata.getString("towns").split("-")));
+        List<String> towns = new ArrayList<>(Arrays.asList(wardata.getString("towns").split("_")));
         if (towns.contains(town.toString())) {
             towns.remove(town.toString());
-            wardata.set("towns", String.join("-", towns));
+            wardata.set("towns", String.join("_", towns));
         }
     }
 
@@ -93,10 +93,10 @@ public class TownWarBase {
             e.printStackTrace();
         }
 
-        List<String> nations = new ArrayList<>(Arrays.asList(wardata.getString("nations").split("-")));
+        List<String> nations = new ArrayList<>(Arrays.asList(wardata.getString("nations").split("_")));
         if (nations.contains(nation.toString())) {
             nations.remove(nation.toString());
-            wardata.set("towns", String.join("-", nations));
+            wardata.set("towns", String.join("_", nations));
         }
     }
 
@@ -109,10 +109,10 @@ public class TownWarBase {
             e.printStackTrace();
         }
 
-        List<String> nations = new ArrayList<>(Arrays.asList(wardata.getString("nations").split("-")));
+        List<String> nations = new ArrayList<>(Arrays.asList(wardata.getString("nations").split("_")));
         if (!nations.contains(nation.toString())) {
             nations.remove(nation.toString());
-            wardata.set("towns", String.join("-", nations));
+            wardata.set("towns", String.join("_", nations));
         }
     }
 
@@ -123,7 +123,7 @@ public class TownWarBase {
         for (File data : database.toFile().listFiles()) {
             try {
                 config.load(data);
-                if (config.getString("attacker") == uuid.toString() || config.getString("defender") == uuid.toString()) {
+                if (config.getString("attacker").equals(uuid.toString()) || config.getString("defender").equals(uuid.toString())) {
                     files.add(data);
                 }
             } catch (IOException | InvalidConfigurationException e) {
@@ -141,7 +141,7 @@ public class TownWarBase {
         for (File data : database.toFile().listFiles()) {
             try {
                 config.load(data);
-                if (config.getString("attacker") == uuid.toString()) {
+                if (config.getString("attacker").equals(uuid.toString())) {
                     towns.add(UUID.fromString(config.getString("defender")));
                 }
             } catch (IOException | InvalidConfigurationException e) {
@@ -168,6 +168,24 @@ public class TownWarBase {
         }
 
         return nations;
+    }
+
+    public static File getWarFile(UUID nation, UUID town) {
+        File warfile = null;
+        YamlConfiguration config = new YamlConfiguration();
+
+        for (File file : getWarFiles(town)) {
+            try {
+                config.load(warfile);
+                if (config.getString("attacker") == nation.toString()) {
+                    warfile = file;
+                }
+            } catch (IOException | InvalidConfigurationException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return warfile;
     }
 
 }
