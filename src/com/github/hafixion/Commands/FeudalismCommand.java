@@ -16,15 +16,19 @@ public class FeudalismCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
         String[] newargs = Arrays.copyOfRange(args, 1, args.length);
-        switch (args[0]) {
-            // ruin commands
-            case "ruin":
-                RuinCommands.exec(commandSender, newargs);
-                break;
-            default:
-                commandSender.sendMessage(ChatInfo.color("&c" + args[0] + " is not a valid argument."));
-                break;
+        if (args.length != 0) {
+            switch (args[0]) {
+                // ruin commands
+                case "ruin":
+                    RuinCommands.exec(commandSender, newargs);
+                    break;
+                default:
+                    commandSender.sendMessage(ChatInfo.color("&c" + args[0] + " is not a valid argument."));
+                    break;
 
+            }
+        } else {
+            //todo add plugin info
         }
         return false;
     }
