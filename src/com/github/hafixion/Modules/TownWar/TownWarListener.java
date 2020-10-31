@@ -118,8 +118,29 @@ public class TownWarListener implements Listener {
     }
 
     @EventHandler
-    public void onNationMerge(NationPreMergeEvent event) {
-        // todo change war to merged nation
+    public void onNationPreMerge(NationPreMergeEvent event) throws NotRegisteredException, IOException, InvalidConfigurationException {
+        // todo change war to merged
+        if (TownWarBase.isNationAtWar(event.getNation())) {
+            for (File file : TownWarBase.getWarFiles(event.getNation().getUuid())) {
+                YamlConfiguration data = new YamlConfiguration();
+                data.load(file);
+                data.set("attacker", event.getRemainingNation().getUuid());
+                WarlistUtils.RemoveNationfromWarList(event.getNation().getUuid());
+                WarlistUtils.AddNationtoWarList(event.getRemainingNation().getUuid());
+            }
+        }
+    }
+
+    @EventHandler
+    public void onNationMerge(NationMergeEvent event) {
+        if (TownWarBase.isNationAtWar(event.getNation())) {
+            for (Town town : event.getNation().getTowns()) {
+                if (!TownWarBase.isTownAtWar(town)) {
+                    WarlistUtils.AddTowntoWarList(town.getUuid());
+                    //todo add broadcast
+                }
+            }
+        }
     }
 
     @EventHandler

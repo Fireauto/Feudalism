@@ -1,6 +1,6 @@
 package com.github.hafixion.Modules.TownWar;
 
-import com.github.hafixion.Utils.FileUtils;
+import com.github.hafixion.Utils.WarlistUtils;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Town;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -23,7 +23,7 @@ public class TownWarBase {
         boolean result = false;
         YamlConfiguration wardata = new YamlConfiguration();
         try {
-            wardata.load(FileUtils.warlist);
+            wardata.load(WarlistUtils.warlist);
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
@@ -40,7 +40,7 @@ public class TownWarBase {
         boolean result = false;
         YamlConfiguration wardata = new YamlConfiguration();
         try {
-            wardata.load(FileUtils.warlist);
+            wardata.load(WarlistUtils.warlist);
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }

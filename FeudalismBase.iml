@@ -28,7 +28,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../FeudalismBackup/deps/Towny-0.96.2.18.jar!/" />
+          <root url="jar://$USER_HOME$/Downloads/Towny-0.96.3.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

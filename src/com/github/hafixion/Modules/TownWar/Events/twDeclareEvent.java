@@ -1,7 +1,7 @@
 package com.github.hafixion.Modules.TownWar.Events;
 
 import com.github.hafixion.Modules.Ruin.RuinBase;
-import com.github.hafixion.Utils.FileUtils;
+import com.github.hafixion.Utils.WarlistUtils;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Resident;
@@ -69,7 +69,7 @@ public class twDeclareEvent extends Event implements Cancellable {
 
             // adding town to warlist
             try {
-                wardata.load(FileUtils.warlist);
+                wardata.load(WarlistUtils.warlist);
             } catch (IOException | InvalidConfigurationException e) {
                 e.printStackTrace();
             }
@@ -80,7 +80,7 @@ public class twDeclareEvent extends Event implements Cancellable {
 
         // adding nation to warlist
         try {
-            wardata.load(FileUtils.warlist);
+            wardata.load(WarlistUtils.warlist);
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }

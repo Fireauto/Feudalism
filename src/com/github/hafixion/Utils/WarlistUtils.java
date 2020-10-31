@@ -3,6 +3,7 @@ package com.github.hafixion.Utils;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,12 +11,13 @@ import java.util.List;
 import java.util.UUID;
 
 public class WarlistUtils {
+    public static File warlist = new File("plugins/Feudalism/data/ruinedtowns", "warlist.yml");
 
     public static void AddTowntoWarList(UUID town) {
         // prepare config
         YamlConfiguration wardata = new YamlConfiguration();
         try {
-            wardata.load(FileUtils.warlist);
+            wardata.load(warlist);
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
@@ -25,13 +27,19 @@ public class WarlistUtils {
             towns.add(town.toString());
             wardata.set("towns", String.join("_", towns));
         }
+
+        try {
+            wardata.save(warlist);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void RemoveTownfromWarList(UUID town) {
         // prepare config
         YamlConfiguration wardata = new YamlConfiguration();
         try {
-            wardata.load(FileUtils.warlist);
+            wardata.load(warlist);
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
@@ -41,13 +49,19 @@ public class WarlistUtils {
             towns.remove(town.toString());
             wardata.set("towns", String.join("_", towns));
         }
+
+        try {
+            wardata.save(warlist);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void AddNationtoWarList(UUID nation) {
         // prepare config
         YamlConfiguration wardata = new YamlConfiguration();
         try {
-            wardata.load(FileUtils.warlist);
+            wardata.load(warlist);
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
@@ -57,13 +71,19 @@ public class WarlistUtils {
             nations.remove(nation.toString());
             wardata.set("towns", String.join("_", nations));
         }
+
+        try {
+            wardata.save(warlist);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void RemoveNationfromWarList(UUID nation) {
         // prepare config
         YamlConfiguration wardata = new YamlConfiguration();
         try {
-            wardata.load(FileUtils.warlist);
+            wardata.load(warlist);
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
@@ -72,6 +92,12 @@ public class WarlistUtils {
         if (nations.contains(nation.toString())) {
             nations.remove(nation.toString());
             wardata.set("towns", String.join("_", nations));
+        }
+
+        try {
+            wardata.save(warlist);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
