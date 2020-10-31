@@ -11,6 +11,7 @@ import com.palmergames.bukkit.towny.event.*;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Town;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.EventHandler;
@@ -118,16 +119,15 @@ public class TownWarListener implements Listener {
     }
 
     @EventHandler
-    public void onNationPreMerge(NationPreMergeEvent event) throws NotRegisteredException, IOException, InvalidConfigurationException {
-        // todo change war to merged
+    public void onNationPreMerge(NationPreMergeEvent event) throws IOException, InvalidConfigurationException {
         if (TownWarBase.isNationAtWar(event.getNation())) {
             for (File file : TownWarBase.getWarFiles(event.getNation().getUuid())) {
                 YamlConfiguration data = new YamlConfiguration();
                 data.load(file);
                 data.set("attacker", event.getRemainingNation().getUuid());
-                WarlistUtils.RemoveNationfromWarList(event.getNation().getUuid());
-                WarlistUtils.AddNationtoWarList(event.getRemainingNation().getUuid());
             }
+            WarlistUtils.RemoveNationfromWarList(event.getNation().getUuid());
+            WarlistUtils.AddNationtoWarList(event.getRemainingNation().getUuid());
         }
     }
 
@@ -137,9 +137,9 @@ public class TownWarListener implements Listener {
             for (Town town : event.getNation().getTowns()) {
                 if (!TownWarBase.isTownAtWar(town)) {
                     WarlistUtils.AddTowntoWarList(town.getUuid());
-                    //todo add broadcast
                 }
             }
+            Bukkit.broadcastMessage(ChatInfo.color("&b" + event.getRemainingnation().getName() + " has inherited all of " + event.getNation().getName() + "'s wars."));
         }
     }
 

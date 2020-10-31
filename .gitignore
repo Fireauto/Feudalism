@@ -23,3 +23,7 @@
 hs_err_pid*
 
 .idea/
+
+out/production/FeudalismBase/config.yml
+
+out/production/FeudalismBase/plugin.yml
