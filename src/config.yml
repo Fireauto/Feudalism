@@ -30,5 +30,7 @@ nation-reclaiming-permission: towny.command.nation.add
 townwar-enabled: true
 # self-explanatory
 
+warscore-kill-max: 50
+# Maximum amount of warscore from kills, limits a person exploiting by insiding.
 warscore-kill: 10
 # amount of warscore lost on death to a player.

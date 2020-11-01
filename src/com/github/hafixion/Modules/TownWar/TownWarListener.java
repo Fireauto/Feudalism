@@ -127,7 +127,8 @@ public class TownWarListener implements Listener {
             for (File file : TownWarBase.getWarFilesfromTowny(event.getNation().getUuid())) {
                 YamlConfiguration data = new YamlConfiguration();
                 data.load(file);
-                data.set("attacker", event.getRemainingNation().getUuid());
+                TownWar war = TownWarBase.getTownWarfromUUID(UUID.fromString(data.getString("uuid")));
+                war.setNation(event.getRemainingNation());
             }
             WarlistUtils.RemoveNationfromWarList(event.getNation().getUuid());
             WarlistUtils.AddNationtoWarList(event.getRemainingNation().getUuid());
@@ -203,21 +204,23 @@ public class TownWarListener implements Listener {
                        Town town = TownyUniverse.getInstance().getDataSource().getTown(uuid);
                        TownWar war = TownWarBase.getTownWarfromTowny(resident.getTown().getNation(), town);
 
-                       // minus warscore (adding to town)
-                       war.setWarscore(war.getWarscore() - FeudalismMain.plugin.getConfig().getInt("warscore-kill"));
+                       // minus warscore (adding to town) and making sure it doesn't exceed the max.
+                       if (war.getKillscore() - FeudalismMain.plugin.getConfig().getInt("warscore-kill") < -(FeudalismMain.plugin.getConfig().getInt("warscore-kill-max"))) {
+                           war.setWarscore(war.getWarscore() - FeudalismMain.plugin.getConfig().getInt("warscore-kill"));
+                       } else {war.setKillscore(-50);}
                    }
                 } else {
                     for (UUID uuid : TownWarBase.getAttackers(resident.getTown().getUuid())) {
                         Nation nation = TownyUniverse.getInstance().getDataSource().getNation(uuid);
                         TownWar war = TownWarBase.getTownWarfromTowny(nation, resident.getTown());
 
-                        // plus warscore (adding to nation)
-                        war.setWarscore(war.getWarscore() + FeudalismMain.plugin.getConfig().getInt("warscore-kill"));
+                        // plus warscore (adding to nation) and making sure it doesn't exceed the max
+                        if (war.getKillscore() + FeudalismMain.plugin.getConfig().getInt("warscore-kill") < FeudalismMain.plugin.getConfig().getInt("warscore-kill-max")) {
+                            war.setWarscore(war.getWarscore() + FeudalismMain.plugin.getConfig().getInt("warscore-kill"));
+                        } else {war.setKillscore(50);}
                     }
                 }
             }
         }
     }
-
-
 }

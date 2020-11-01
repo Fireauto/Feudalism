@@ -18,6 +18,7 @@ public class TownWar {
     public long time;
     public UUID uuid;
     public File file;
+    public int killscore;
 
     // this kinda just controls all townwars
 
@@ -27,6 +28,7 @@ public class TownWar {
         this.town = null;
         this.time = System.currentTimeMillis();
         this.uuid = null;
+        this.killscore = 0;
     }
 
     public TownWar(Nation nation, Town town, File file, UUID uuid) {
@@ -35,6 +37,7 @@ public class TownWar {
         this.uuid = uuid;
         this.time = System.currentTimeMillis();
         this.file = file;
+        this.killscore = 0;
 
         // file editing
         YamlConfiguration filedata = new YamlConfiguration();
@@ -44,6 +47,7 @@ public class TownWar {
         filedata.set("defender", town.getUuid());
         filedata.set("warscore", 0);
         filedata.set("time", time);
+        filedata.set("killscore", 0);
 
         try {
             filedata.save(file);
@@ -153,7 +157,25 @@ public class TownWar {
             this.uuid = UUID.fromString(config.getString("uuid"));
             this.time = config.getLong("time");
             this.warscore = config.getInt("warscore");
+            this.killscore = config.getInt("killscore");
         } catch (IOException | InvalidConfigurationException | NotRegisteredException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public int getKillscore() {
+        return killscore;
+    }
+
+    public void setKillscore(int killscore) {
+        this.killscore = killscore;
+        File file = getFile();
+        YamlConfiguration config = new YamlConfiguration();
+
+        try {
+            config.load(file);
+            config.set("killscore", killscore);
+        } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
     }
