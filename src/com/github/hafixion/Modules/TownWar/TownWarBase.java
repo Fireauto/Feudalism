@@ -1,6 +1,5 @@
 package com.github.hafixion.Modules.TownWar;
 
-import com.github.hafixion.Utils.WarlistUtils;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Town;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -10,49 +9,13 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
 public class TownWarBase {
     public static Path database = Paths.get("plugins/Feudalism/data/townwar");
 
-    public static boolean isTownAtWar(Town town) {
-        // prepare config
-        boolean result = false;
-        YamlConfiguration wardata = new YamlConfiguration();
-        try {
-            wardata.load(WarlistUtils.warlist);
-        } catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
-        }
-
-        List<String> wars = new ArrayList<>(Arrays.asList(wardata.getString("wars").split("_")));
-         if (wars.contains(town.getUuid().toString())) {
-             result = true;
-         }
-         return result;
-    }
-
-    public static boolean isNationAtWar(Nation nation) {
-        // prepare config
-        boolean result = false;
-        YamlConfiguration wardata = new YamlConfiguration();
-        try {
-            wardata.load(WarlistUtils.warlist);
-        } catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
-        }
-
-        List<String> wars = new ArrayList<>(Arrays.asList(wardata.getString("nations").split("_")));
-        if (wars.contains(nation.getUuid().toString())) {
-            result = true;
-        }
-        return result;
-    }
-
-    public static List<File> getWarFiles(UUID uuid) {
+    public static List<File> getWarFilesfromTowny(UUID uuid) {
         List<File> files = null;
         YamlConfiguration config = new YamlConfiguration();
 
@@ -95,7 +58,7 @@ public class TownWarBase {
         for (File data : database.toFile().listFiles()) {
             try {
                 config.load(data);
-                if (config.getString("defender") == uuid.toString()) {
+                if (config.getString("defender").equals(uuid.toString())) {
                     nations.add(UUID.fromString(config.getString("attacker")));
                 }
             } catch (IOException | InvalidConfigurationException e) {
@@ -106,14 +69,14 @@ public class TownWarBase {
         return nations;
     }
 
-    public static File getWarFile(UUID nation, UUID town) {
+    public static File getWarFilefromTowny(UUID nation, UUID town) {
         File warfile = null;
         YamlConfiguration config = new YamlConfiguration();
 
-        for (File file : getWarFiles(town)) {
+        for (File file : getWarFilesfromTowny(town)) {
             try {
-                config.load(warfile);
-                if (config.getString("attacker") == nation.toString()) {
+                config.load(file);
+                if (config.getString("attacker").equals(nation.toString())) {
                     warfile = file;
                 }
             } catch (IOException | InvalidConfigurationException e) {
@@ -122,6 +85,59 @@ public class TownWarBase {
         }
 
         return warfile;
+    }
+
+    public static File getWarFile(UUID uuid) {
+        File warfile = null;
+        YamlConfiguration config = new YamlConfiguration();
+
+        for (File file : TownWarBase.database.toFile().listFiles()) {
+            try {
+                config.load(file);
+                if (config.getString("uuid").equals(uuid.toString())) {
+                    warfile = file;
+                }
+            } catch (IOException | InvalidConfigurationException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        return warfile;
+    }
+
+    // TownWar obj additions
+
+    public static TownWar getTownWarfromTowny(Nation nation, Town town) {
+        TownWar war = new TownWar();
+        File file = getWarFilefromTowny(nation.getUuid(), town.getUuid());
+        YamlConfiguration config = new YamlConfiguration();
+
+        try {
+            config.load(file);
+            war.setFile(file);
+
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+
+        return war;
+    }
+
+    public static TownWar getTownWarfromUUID(UUID uuid) {
+        TownWar war = new TownWar();
+        File file = getWarFile(uuid);
+        YamlConfiguration config = new YamlConfiguration();
+
+        try {
+            config.load(file);
+            war.setFile(file);
+
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+
+        return war;
     }
 
 }

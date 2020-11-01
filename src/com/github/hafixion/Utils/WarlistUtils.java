@@ -1,5 +1,7 @@
 package com.github.hafixion.Utils;
 
+import com.palmergames.bukkit.towny.object.Nation;
+import com.palmergames.bukkit.towny.object.Town;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -101,4 +103,37 @@ public class WarlistUtils {
         }
     }
 
+    public static boolean isTownAtWar(Town town) {
+        // prepare config
+        boolean result = false;
+        YamlConfiguration wardata = new YamlConfiguration();
+        try {
+            wardata.load(warlist);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+
+        List<String> wars = new ArrayList<>(Arrays.asList(wardata.getString("wars").split("_")));
+         if (wars.contains(town.getUuid().toString())) {
+             result = true;
+         }
+         return result;
+    }
+
+    public static boolean isNationAtWar(Nation nation) {
+        // prepare config
+        boolean result = false;
+        YamlConfiguration wardata = new YamlConfiguration();
+        try {
+            wardata.load(warlist);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+
+        List<String> wars = new ArrayList<>(Arrays.asList(wardata.getString("nations").split("_")));
+        if (wars.contains(nation.getUuid().toString())) {
+            result = true;
+        }
+        return result;
+    }
 }

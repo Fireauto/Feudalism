@@ -1,5 +1,6 @@
 package com.github.hafixion.Modules.TownWar.Events;
 
+import com.github.hafixion.Modules.TownWar.TownWar;
 import com.github.hafixion.Modules.TownWar.TownWarBase;
 import com.github.hafixion.Utils.ChatInfo;
 import com.github.hafixion.Utils.WarlistUtils;
@@ -12,15 +13,17 @@ import org.bukkit.event.HandlerList;
 import java.io.File;
 
 public class twTownVictoryEvent extends Event {
-    public Town town;
-    public Nation nation;
+
+    public TownWar war;
     public HandlerList handlerList;
 
-    public twTownVictoryEvent(Nation nation, Town town) {
-        nation.addTown(town);
-        Bukkit.broadcastMessage(ChatInfo.color("&b" + town.getName() + " has successfully resisted " + nation.getName()));
+    public twTownVictoryEvent(TownWar townwar) {
+        this.war = townwar;
+        Nation nation = townwar.getNation();
+        Town town = townwar.getTown();
+        Bukkit.broadcastMessage(ChatInfo.color("&b" + townwar.getTown().getName() + " has successfully resisted " + townwar.getNation().getName()));
 
-        File file = TownWarBase.getWarFile(nation.getUuid(), town.getUuid());
+        File file = townwar.getFile();
         file.delete();
 
         for (Town town1 : nation.getTowns()) {
@@ -41,19 +44,11 @@ public class twTownVictoryEvent extends Event {
         return handlerList;
     }
 
-    public void setNation(Nation nation) {
-        this.nation = nation;
+    public TownWar getWar() {
+        return war;
     }
 
-    public Nation getNation() {
-        return nation;
-    }
-
-    public void setTown(Town town) {
-        this.town = town;
-    }
-
-    public Town getTown() {
-        return town;
+    public void setWar(TownWar war) {
+        this.war = war;
     }
 }

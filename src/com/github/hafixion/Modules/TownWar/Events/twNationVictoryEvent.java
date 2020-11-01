@@ -1,5 +1,6 @@
 package com.github.hafixion.Modules.TownWar.Events;
 
+import com.github.hafixion.Modules.TownWar.TownWar;
 import com.github.hafixion.Modules.TownWar.TownWarBase;
 import com.github.hafixion.Utils.ChatInfo;
 import com.github.hafixion.Utils.WarlistUtils;
@@ -12,15 +13,18 @@ import org.bukkit.event.HandlerList;
 import java.io.File;
 
 public class twNationVictoryEvent extends Event {
-    public Town town;
-    public Nation nation;
+
+    public TownWar war;
     public HandlerList handlerList;
 
-    public twNationVictoryEvent(Nation nation, Town town) {
-        nation.addTown(town);
-        Bukkit.broadcastMessage(ChatInfo.color("&b" + nation.getName() + " has successfully subjugated " + town.getName()));
+    public twNationVictoryEvent(TownWar townwar) {
+        this.war = townwar;
+        Nation nation = townwar.getNation();
+        Town town = townwar.getTown();
+        townwar.getNation().addTown(townwar.getTown());
+        Bukkit.broadcastMessage(ChatInfo.color("&b" + townwar.getNation().getName() + " has successfully subjugated " + townwar.getTown().getName()));
 
-        File file = TownWarBase.getWarFile(nation.getUuid(), town.getUuid());
+        File file = townwar.getFile();
         file.delete();
 
         for (Town town1 : nation.getTowns()) {
@@ -41,19 +45,11 @@ public class twNationVictoryEvent extends Event {
         return handlerList;
     }
 
-    public void setNation(Nation nation) {
-        this.nation = nation;
+    public TownWar getWar() {
+        return war;
     }
 
-    public Nation getNation() {
-        return nation;
-    }
-
-    public void setTown(Town town) {
-        this.town = town;
-    }
-
-    public Town getTown() {
-        return town;
+    public void setWar(TownWar war) {
+        this.war = war;
     }
 }

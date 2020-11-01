@@ -10,7 +10,7 @@
 
 # ---------------------------------------
 #             Ruined Towns
-# ----------------------------------------
+# ---------------------------------------
 ruin-enabled: true
 # self-explanatory
 nation-reclaiming-enabled: true
@@ -23,3 +23,12 @@ time-till-expiration: 86400000
 # how much time it'll take until a ruined town is considered expired
 nation-reclaiming-permission: towny.command.nation.add
 # the permission required to request that someone reclaim a town for the nation
+
+# -------------------------------------
+#             Town Wars
+# -------------------------------------
+townwar-enabled: true
+# self-explanatory
+
+warscore-kill: 10
+# amount of warscore lost on death to a player.

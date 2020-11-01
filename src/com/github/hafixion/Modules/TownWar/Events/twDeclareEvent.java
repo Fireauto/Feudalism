@@ -1,6 +1,8 @@
 package com.github.hafixion.Modules.TownWar.Events;
 
 import com.github.hafixion.Modules.Ruin.RuinBase;
+import com.github.hafixion.Modules.TownWar.TownWar;
+import com.github.hafixion.Modules.TownWar.TownWarBase;
 import com.github.hafixion.Utils.WarlistUtils;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.object.Nation;
@@ -26,22 +28,16 @@ public class twDeclareEvent extends Event implements Cancellable {
     public Nation nation;
     public Town town;
     public File file;
-    public UUID uuid = UUID.randomUUID();
     public YamlConfiguration wardata = new YamlConfiguration();
+    public TownWar townWar;
 
     // actual event shit
     public twDeclareEvent(Nation nation, Town town) {
-        file = new File(RuinBase.database.toString(), uuid + ".yml");
-        YamlConfiguration filedata = new YamlConfiguration();
-        filedata.set("attacker", nation.getUuid());
-        filedata.set("defender", town.getUuid());
-        filedata.set("warscore", 0);
-        filedata.set("time", System.currentTimeMillis());
-        try {
-            filedata.save(file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+        // town war obj
+        UUID uuid = UUID.randomUUID();
+        File file = new File(TownWarBase.database.toString(), uuid + ".yml");
+        townWar = new TownWar(nation, town, file, uuid);
 
         List<Town> townList = nation.getTowns();
         townList.add(town);
@@ -127,5 +123,9 @@ public class twDeclareEvent extends Event implements Cancellable {
 
     public void setNation(Nation nation) {
         this.nation = nation;
+    }
+
+    public TownWar getTownWar() {
+        return townWar;
     }
 }

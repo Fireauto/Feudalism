@@ -10,12 +10,14 @@ import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.event.*;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.object.Nation;
+import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.Town;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.PlayerDeathEvent;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,12 +33,12 @@ public class TownWarListener implements Listener {
     @EventHandler
     public void onTownTeleport(TownSpawnEvent event) throws NotRegisteredException {
 
-        if (TownWarBase.isTownAtWar(TownyUniverse.getInstance().getDataSource().getTown(event.getPlayer().getName()))) {
+        if (WarlistUtils.isTownAtWar(TownyUniverse.getInstance().getDataSource().getTown(event.getPlayer().getName()))) {
             event.setCancelled(true);
             event.getPlayer().sendMessage(ChatInfo.color("&cYou cannot teleport while at war."));
         }
 
-        if (TownWarBase.isTownAtWar(event.getToTown())) {
+        if (WarlistUtils.isTownAtWar(event.getToTown())) {
             event.setCancelled(true);
             event.getPlayer().sendMessage(ChatInfo.color("&c" + event.getToTown().getName() + " is currently at war."));
         }
@@ -46,12 +48,12 @@ public class TownWarListener implements Listener {
     @EventHandler
     public void onNationTeleport(NationSpawnEvent event) throws NotRegisteredException {
 
-        if (TownWarBase.isTownAtWar(TownyUniverse.getInstance().getDataSource().getTown(event.getPlayer().getName()))) {
+        if (WarlistUtils.isTownAtWar(TownyUniverse.getInstance().getDataSource().getTown(event.getPlayer().getName()))) {
             event.setCancelled(true);
             event.getPlayer().sendMessage(ChatInfo.color("&cYou cannot teleport while at war."));
         }
 
-        if (TownWarBase.isNationAtWar(event.getToNation())) {
+        if (WarlistUtils.isNationAtWar(event.getToNation())) {
             event.setCancelled(true);
             event.getPlayer().sendMessage(ChatInfo.color("&c" + event.getToNation().getName() + " is currently at war."));
         }
@@ -62,7 +64,7 @@ public class TownWarListener implements Listener {
     // when a dumbass invites a town at war
     public void onNationInvite(NationInviteTownEvent event) {
 
-        if (TownWarBase.isTownAtWar(event.getInvite().getReceiver())) {
+        if (WarlistUtils.isTownAtWar(event.getInvite().getReceiver())) {
             event.getInvite().decline(true);
             event.getInvite().getDirectSender().sendMessage(ChatInfo.color("&c" + event.getInvite().getReceiver().getName() + " is at war, they cannot join a town at this time."));
         }
@@ -73,7 +75,7 @@ public class TownWarListener implements Listener {
     // when a dumbass joins a nation at war
     public void onNationJoin(NationAddTownEvent event) {
 
-        if (TownWarBase.isNationAtWar(event.getNation())) {
+        if (WarlistUtils.isNationAtWar(event.getNation())) {
             WarlistUtils.AddTowntoWarList(event.getTown().getUuid());
         }
 
@@ -85,7 +87,7 @@ public class TownWarListener implements Listener {
 
         // this is just to make sure it wasn't a merge
         if (!event.getTown().hasNation()) {
-            if (TownWarBase.isNationAtWar(event.getNation())) {
+            if (WarlistUtils.isNationAtWar(event.getNation())) {
                 WarlistUtils.RemoveTownfromWarList(event.getTown().getUuid());
             }
         }
@@ -108,6 +110,7 @@ public class TownWarListener implements Listener {
             for (UUID uuid : TownWarBase.getDefenders(event.getNationUUID())) {
                 Town town = TownyUniverse.getInstance().getDataSource().getTown(uuid);
                 TownyMessaging.sendGlobalMessage(ChatInfo.color("&b" + event.getNationName() + " has collapsed, " + town.getName() + " is now at peace."));
+                TownWarBase.getWarFilefromTowny(event.getNationUUID(), town.getUuid()).delete();
                 WarlistUtils.RemoveTownfromWarList(uuid);
             }
 
@@ -120,8 +123,8 @@ public class TownWarListener implements Listener {
 
     @EventHandler
     public void onNationPreMerge(NationPreMergeEvent event) throws IOException, InvalidConfigurationException {
-        if (TownWarBase.isNationAtWar(event.getNation())) {
-            for (File file : TownWarBase.getWarFiles(event.getNation().getUuid())) {
+        if (WarlistUtils.isNationAtWar(event.getNation())) {
+            for (File file : TownWarBase.getWarFilesfromTowny(event.getNation().getUuid())) {
                 YamlConfiguration data = new YamlConfiguration();
                 data.load(file);
                 data.set("attacker", event.getRemainingNation().getUuid());
@@ -133,9 +136,9 @@ public class TownWarListener implements Listener {
 
     @EventHandler
     public void onNationMerge(NationMergeEvent event) {
-        if (TownWarBase.isNationAtWar(event.getNation())) {
+        if (WarlistUtils.isNationAtWar(event.getNation())) {
             for (Town town : event.getNation().getTowns()) {
-                if (!TownWarBase.isTownAtWar(town)) {
+                if (!WarlistUtils.isTownAtWar(town)) {
                     WarlistUtils.AddTowntoWarList(town.getUuid());
                 }
             }
@@ -153,11 +156,11 @@ public class TownWarListener implements Listener {
         /* the actual stuff, overcomplicated but basically check if bigger than warscore and if it is set it as the warscore
         and set the nation as the victor, keep going until all nations are done and you should have the victor
          */
-        if (TownWarBase.isTownAtWar(town)) {
+        if (WarlistUtils.isTownAtWar(town)) {
             for (UUID uuid : TownWarBase.getAttackers(town.getUuid())) {
                 Nation nation = TownyUniverse.getInstance().getDataSource().getNation(uuid);
 
-                for (File file : TownWarBase.getWarFiles(town.getUuid())) {
+                for (File file : TownWarBase.getWarFilesfromTowny(town.getUuid())) {
                     config.load(file);
                     if (warscore < config.getInt("warscore")) {
                         warscore = config.getInt("warscore");
@@ -166,7 +169,8 @@ public class TownWarListener implements Listener {
                 }
             }
             if (victor != null) {
-                twNationVictoryEvent victoryEvent = new twNationVictoryEvent(victor, town);
+                TownWar war = TownWarBase.getTownWarfromTowny(victor, town);
+                twNationVictoryEvent victoryEvent = new twNationVictoryEvent(war);
                 FeudalismMain.plugin.getServer().getPluginManager().callEvent(victoryEvent);
             }
         }
@@ -174,9 +178,46 @@ public class TownWarListener implements Listener {
 
     @EventHandler
     public void onPreNewNation(PreNewNationEvent event) {
-        if (TownWarBase.isTownAtWar(event.getTown())) {
+        if (WarlistUtils.isTownAtWar(event.getTown())) {
             event.setCancelled(true);
             event.getTown().getMayor().getPlayer().sendMessage(ChatInfo.color("&cCannot create a nation while at war."));
         }
     }
+
+
+    /*
+    ------------------------
+    Warscore Events
+    ------------------------
+    */
+
+    @EventHandler
+    public void onPlayerKill(PlayerDeathEvent event) throws NotRegisteredException {
+        if (event.getEntity().getKiller() != null) {
+            Resident resident = TownyUniverse.getInstance().getDataSource().getResident(event.getEntity().getName());
+
+            if (resident.hasTown() && WarlistUtils.isTownAtWar(resident.getTown())) {
+                // if they do have a town, does it have a nation?
+                if (resident.getTown().hasNation()) {
+                   for (UUID uuid : TownWarBase.getDefenders(resident.getTown().getNation().getUuid())) {
+                       Town town = TownyUniverse.getInstance().getDataSource().getTown(uuid);
+                       TownWar war = TownWarBase.getTownWarfromTowny(resident.getTown().getNation(), town);
+
+                       // minus warscore (adding to town)
+                       war.setWarscore(war.getWarscore() - FeudalismMain.plugin.getConfig().getInt("warscore-kill"));
+                   }
+                } else {
+                    for (UUID uuid : TownWarBase.getAttackers(resident.getTown().getUuid())) {
+                        Nation nation = TownyUniverse.getInstance().getDataSource().getNation(uuid);
+                        TownWar war = TownWarBase.getTownWarfromTowny(nation, resident.getTown());
+
+                        // plus warscore (adding to nation)
+                        war.setWarscore(war.getWarscore() + FeudalismMain.plugin.getConfig().getInt("warscore-kill"));
+                    }
+                }
+            }
+        }
+    }
+
+
 }
