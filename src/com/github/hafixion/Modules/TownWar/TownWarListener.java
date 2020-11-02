@@ -223,4 +223,6 @@ public class TownWarListener implements Listener {
             }
         }
     }
+
+    // occupation momento
 }

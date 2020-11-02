@@ -64,6 +64,7 @@ public class TownWar {
         try {
             config.load(file);
             config.set("defender", town.getUuid());
+            config.save(file);
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
@@ -81,6 +82,7 @@ public class TownWar {
         try {
             config.load(file);
             config.set("attacker", nation.getUuid());
+            config.save(file);
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
@@ -102,6 +104,7 @@ public class TownWar {
         try {
             config.load(file);
             config.set("time", time);
+            config.save(file);
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
@@ -119,6 +122,7 @@ public class TownWar {
         try {
             config.load(file);
             config.set("warscore", warscore);
+            config.save(file);
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
@@ -136,6 +140,7 @@ public class TownWar {
         try {
             config.load(file);
             config.set("uuid", uuid.toString());
+            config.save(file);
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
@@ -175,6 +180,7 @@ public class TownWar {
         try {
             config.load(file);
             config.set("killscore", killscore);
+            config.save(file);
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
