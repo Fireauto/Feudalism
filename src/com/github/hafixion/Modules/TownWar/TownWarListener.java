@@ -225,4 +225,25 @@ public class TownWarListener implements Listener {
     }
 
     // occupation momento
+
+    @EventHandler
+    public void onPlotChange(PlayerChangePlotEvent event) throws NotRegisteredException {
+        Resident resident = TownyUniverse.getInstance().getDataSource().getResident(event.getPlayer().getName());
+        if (resident.hasTown() && WarlistUtils.isTownAtWar(resident.getTown()) && event.getTo().getTownBlock().hasTown()) {
+            if (resident.getTown().hasNation()) {
+                if (!event.getTo().getTownBlock().getTown().hasNation()) {
+                    if (TownWarBase.getTownWarfromTowny(resident.getTown().getNation(), event.getTo().getTownBlock().getTown()) != null) {
+                        event.getMoveEvent().setCancelled(true); // for now just don't allow them to go to towns
+                    }
+                }
+            } else {
+                if (event.getTo().getTownBlock().getTown().hasNation()) {
+                    if (TownWarBase.getTownWarfromTowny(event.getTo().getTownBlock().getTown().getNation(), resident.getTown()) != null) {
+                        event.getMoveEvent().setCancelled(true); // for now just don't allow them to go to towns
+                    }
+                }
+                // town is going to nation which is at war with 'em
+            }
+        }
+    }
 }

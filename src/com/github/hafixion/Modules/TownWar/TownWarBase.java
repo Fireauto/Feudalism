@@ -111,14 +111,9 @@ public class TownWarBase {
     public static TownWar getTownWarfromTowny(Nation nation, Town town) {
         TownWar war = new TownWar();
         File file = getWarFilefromTowny(nation.getUuid(), town.getUuid());
-        YamlConfiguration config = new YamlConfiguration();
 
-        try {
-            config.load(file);
+        if (file != null) {
             war.setFile(file);
-
-        } catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
         }
 
         return war;
@@ -127,15 +122,8 @@ public class TownWarBase {
     public static TownWar getTownWarfromUUID(UUID uuid) {
         TownWar war = new TownWar();
         File file = getWarFile(uuid);
-        YamlConfiguration config = new YamlConfiguration();
 
-        try {
-            config.load(file);
-            war.setFile(file);
-
-        } catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
-        }
+        war.setFile(file);
 
         return war;
     }
