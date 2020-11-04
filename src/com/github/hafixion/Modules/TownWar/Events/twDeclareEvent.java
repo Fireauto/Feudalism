@@ -1,6 +1,5 @@
 package com.github.hafixion.Modules.TownWar.Events;
 
-import com.github.hafixion.Modules.Ruin.RuinBase;
 import com.github.hafixion.Modules.TownWar.TownWar;
 import com.github.hafixion.Modules.TownWar.TownWarBase;
 import com.github.hafixion.Utils.WarlistUtils;
@@ -17,10 +16,7 @@ import org.bukkit.event.HandlerList;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class twDeclareEvent extends Event implements Cancellable {
     public HandlerList handlerList;
@@ -39,14 +35,14 @@ public class twDeclareEvent extends Event implements Cancellable {
         File file = new File(TownWarBase.database.toString(), uuid + ".yml");
         townWar = new TownWar(nation, town, file, uuid);
 
-        List<Town> townList = nation.getTowns();
+        List<Town> townList = new LinkedList<>(nation.getTowns());
         townList.add(town);
 
         for (Town town1 : townList) {
 
             town1.setAdminEnabledPVP(true);
             List<Resident> residents = town1.getResidents();
-            for (Resident resident : residents) {
+             for (Resident resident : residents) {
                 for (TownBlock townBlock : resident.getTownBlocks()) {
                     try {
                         // complex way of saying, if the plot's town is in the attacking nation
@@ -62,27 +58,10 @@ public class twDeclareEvent extends Event implements Cancellable {
                     }
                 }
             }
-
-            // adding town to warlist
-            try {
-                wardata.load(WarlistUtils.warlist);
-            } catch (IOException | InvalidConfigurationException e) {
-                e.printStackTrace();
-            }
-            List<String> towns = new ArrayList<>(Arrays.asList(wardata.getString("towns").split("-")));
-            towns.add(town1.getUuid().toString());
-            wardata.set("towns", String.join("-", towns));
+             WarlistUtils.AddTowntoWarList(town1.getUuid());
         }
 
-        // adding nation to warlist
-        try {
-            wardata.load(WarlistUtils.warlist);
-        } catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
-        }
-        List<String> nations = new ArrayList<>(Arrays.asList(wardata.getString("nations").split("-")));
-        nations.add(nation.getUuid().toString());
-        wardata.set("nations", String.join("-", nations));
+        WarlistUtils.AddNationtoWarList(nation.getUuid());
     }
 
     // mandatory stuff ignore

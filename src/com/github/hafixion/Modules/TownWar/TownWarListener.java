@@ -229,7 +229,7 @@ public class TownWarListener implements Listener {
     @EventHandler
     public void onPlotChange(PlayerChangePlotEvent event) throws NotRegisteredException {
         Resident resident = TownyUniverse.getInstance().getDataSource().getResident(event.getPlayer().getName());
-        if (resident.hasTown() && WarlistUtils.isTownAtWar(resident.getTown()) && event.getTo().getTownBlock().hasTown()) {
+        if (resident.hasTown() && WarlistUtils.isTownAtWar(resident.getTown()) && event.getTo().hasTownBlock()) {
             if (resident.getTown().hasNation()) {
                 if (!event.getTo().getTownBlock().getTown().hasNation()) {
                     if (TownWarBase.getTownWarfromTowny(resident.getTown().getNation(), event.getTo().getTownBlock().getTown()) != null) {

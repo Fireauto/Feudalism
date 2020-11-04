@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,17 +17,19 @@ public class TownWarBase {
     public static Path database = Paths.get("plugins/Feudalism/data/townwar");
 
     public static List<File> getWarFilesfromTowny(UUID uuid) {
-        List<File> files = null;
+        List<File> files = new LinkedList<>();
         YamlConfiguration config = new YamlConfiguration();
 
-        for (File data : database.toFile().listFiles()) {
-            try {
-                config.load(data);
-                if (config.getString("attacker").equals(uuid.toString()) || config.getString("defender").equals(uuid.toString())) {
-                    files.add(data);
+        if (database.toFile().listFiles() != null) {
+            for (File data : database.toFile().listFiles()) {
+                try {
+                    config.load(data);
+                    if (config.getString("attacker").equals(uuid.toString()) || config.getString("defender").equals(uuid.toString())) {
+                        files.add(data);
+                    }
+                } catch (IOException | InvalidConfigurationException e) {
+                    e.printStackTrace();
                 }
-            } catch (IOException | InvalidConfigurationException e) {
-                e.printStackTrace();
             }
         }
 
@@ -34,17 +37,19 @@ public class TownWarBase {
     }
 
     public static List<UUID> getDefenders(UUID uuid) {
-        List<UUID> towns = null;
+        List<UUID> towns = new LinkedList<>();
         YamlConfiguration config = new YamlConfiguration();
 
-        for (File data : database.toFile().listFiles()) {
-            try {
-                config.load(data);
-                if (config.getString("attacker").equals(uuid.toString())) {
-                    towns.add(UUID.fromString(config.getString("defender")));
+        if (database.toFile().listFiles() != null) {
+            for (File data : database.toFile().listFiles()) {
+                try {
+                    config.load(data);
+                    if (config.getString("attacker").equals(uuid.toString())) {
+                        towns.add(UUID.fromString(config.getString("defender")));
+                    }
+                } catch (IOException | InvalidConfigurationException e) {
+                    e.printStackTrace();
                 }
-            } catch (IOException | InvalidConfigurationException e) {
-                e.printStackTrace();
             }
         }
 
@@ -52,17 +57,19 @@ public class TownWarBase {
     }
 
     public static List<UUID> getAttackers(UUID uuid) {
-        List<UUID> nations = null;
+        List<UUID> nations = new LinkedList<>();
         YamlConfiguration config = new YamlConfiguration();
 
-        for (File data : database.toFile().listFiles()) {
-            try {
-                config.load(data);
-                if (config.getString("defender").equals(uuid.toString())) {
-                    nations.add(UUID.fromString(config.getString("attacker")));
+        if (database.toFile().listFiles() != null) {
+            for (File data : database.toFile().listFiles()) {
+                try {
+                    config.load(data);
+                    if (config.getString("defender").equals(uuid.toString())) {
+                        nations.add(UUID.fromString(config.getString("attacker")));
+                    }
+                } catch (IOException | InvalidConfigurationException e) {
+                    e.printStackTrace();
                 }
-            } catch (IOException | InvalidConfigurationException e) {
-                e.printStackTrace();
             }
         }
 
@@ -73,14 +80,16 @@ public class TownWarBase {
         File warfile = null;
         YamlConfiguration config = new YamlConfiguration();
 
-        for (File file : getWarFilesfromTowny(town)) {
-            try {
-                config.load(file);
-                if (config.getString("attacker").equals(nation.toString())) {
-                    warfile = file;
+        if (getWarFilesfromTowny(town) != null) {
+            for (File file : getWarFilesfromTowny(town)) {
+                try {
+                    config.load(file);
+                    if (config.getString("attacker").equals(nation.toString())) {
+                        warfile = file;
+                    }
+                } catch (IOException | InvalidConfigurationException e) {
+                    e.printStackTrace();
                 }
-            } catch (IOException | InvalidConfigurationException e) {
-                e.printStackTrace();
             }
         }
 
@@ -91,16 +100,18 @@ public class TownWarBase {
         File warfile = null;
         YamlConfiguration config = new YamlConfiguration();
 
-        for (File file : TownWarBase.database.toFile().listFiles()) {
-            try {
-                config.load(file);
-                if (config.getString("uuid").equals(uuid.toString())) {
-                    warfile = file;
+        if (database.toFile().listFiles() != null) {
+            for (File file : TownWarBase.database.toFile().listFiles()) {
+                try {
+                    config.load(file);
+                    if (String.valueOf(config.get("uuid")).equals(uuid.toString())) {
+                        warfile = file;
+                    }
+                } catch (IOException | InvalidConfigurationException e) {
+                    e.printStackTrace();
                 }
-            } catch (IOException | InvalidConfigurationException e) {
-                e.printStackTrace();
-            }
 
+            }
         }
 
         return warfile;

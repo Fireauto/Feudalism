@@ -43,8 +43,8 @@ public class TownWar {
         YamlConfiguration filedata = new YamlConfiguration();
 
         filedata.set("uuid", uuid.toString());
-        filedata.set("attacker", nation.getUuid());
-        filedata.set("defender", town.getUuid());
+        filedata.set("attacker", nation.getUuid().toString());
+        filedata.set("defender", town.getUuid().toString());
         filedata.set("warscore", 0);
         filedata.set("time", time);
         filedata.set("killscore", 0);
@@ -63,7 +63,7 @@ public class TownWar {
 
         try {
             config.load(file);
-            config.set("defender", town.getUuid());
+            config.set("defender", town.getUuid().toString());
             config.save(file);
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
@@ -81,7 +81,7 @@ public class TownWar {
 
         try {
             config.load(file);
-            config.set("attacker", nation.getUuid());
+            config.set("attacker", nation.getUuid().toString());
             config.save(file);
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
@@ -157,9 +157,9 @@ public class TownWar {
 
         try {
             config.load(file);
-            this.nation = TownyUniverse.getInstance().getDataSource().getNation(config.getString("attacker"));
-            this.town = TownyUniverse.getInstance().getDataSource().getTown(config.getString("defender"));
-            this.uuid = UUID.fromString(config.getString("uuid"));
+            this.nation = TownyUniverse.getInstance().getDataSource().getNation(UUID.fromString(config.getString("attacker")));
+            this.town = TownyUniverse.getInstance().getDataSource().getTown(UUID.fromString(config.getString("defender")));
+            this.uuid = UUID.fromString(String.valueOf(config.get("uuid")));
             this.time = config.getLong("time");
             this.warscore = config.getInt("warscore");
             this.killscore = config.getInt("killscore");

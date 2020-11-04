@@ -7,10 +7,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class WarlistUtils {
     public static File warlist = new File("plugins/Feudalism/data/ruinedtowns", "warlist.yml");
@@ -18,16 +15,24 @@ public class WarlistUtils {
     public static void AddTowntoWarList(UUID town) {
         // prepare config
         YamlConfiguration wardata = new YamlConfiguration();
-        try {
-            wardata.load(warlist);
-        } catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
-        }
+        if (warlist.exists()) {
+            try {
+                wardata.load(warlist);
+            } catch (IOException | InvalidConfigurationException e) {
+                e.printStackTrace();
+            }
 
-        List<String> towns = new ArrayList<>(Arrays.asList(wardata.getString("towns").split("_")));
-        if (!towns.contains(town.toString())) {
-            towns.add(town.toString());
-            wardata.set("towns", String.join("_", towns));
+            if (wardata.getString("towns") != null) {
+                List<String> towns = new LinkedList<>(Arrays.asList(Objects.requireNonNull(wardata.getString("towns")).split("_")));
+                if (!towns.contains(town.toString())) {
+                    towns.add(town.toString());
+                    wardata.set("towns", String.join("_", towns));
+                }
+            } else {
+                wardata.set("towns", town.toString());
+            }
+        } else {
+             wardata.set("towns", town.toString());
         }
 
         try {
@@ -40,16 +45,20 @@ public class WarlistUtils {
     public static void RemoveTownfromWarList(UUID town) {
         // prepare config
         YamlConfiguration wardata = new YamlConfiguration();
-        try {
-            wardata.load(warlist);
-        } catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
-        }
+        if (warlist.exists()) {
+            try {
+                wardata.load(warlist);
+            } catch (IOException | InvalidConfigurationException e) {
+                e.printStackTrace();
+            }
 
-        List<String> towns = new ArrayList<>(Arrays.asList(wardata.getString("towns").split("_")));
-        if (towns.contains(town.toString())) {
-            towns.remove(town.toString());
-            wardata.set("towns", String.join("_", towns));
+            if (wardata.getString("towns") != null) {
+                List<String> towns = new LinkedList<>(Arrays.asList(wardata.getString("towns").split("_")));
+                if (towns.contains(town.toString())) {
+                    towns.remove(town.toString());
+                    wardata.set("towns", String.join("_", towns));
+                }
+            }
         }
 
         try {
@@ -62,17 +71,21 @@ public class WarlistUtils {
     public static void AddNationtoWarList(UUID nation) {
         // prepare config
         YamlConfiguration wardata = new YamlConfiguration();
-        try {
-            wardata.load(warlist);
-        } catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
-        }
+        if (warlist.exists()) {
+            try {
+                wardata.load(warlist);
+            } catch (IOException | InvalidConfigurationException e) {
+                e.printStackTrace();
+            }
 
-        List<String> nations = new ArrayList<>(Arrays.asList(wardata.getString("nations").split("_")));
-        if (!nations.contains(nation.toString())) {
-            nations.remove(nation.toString());
-            wardata.set("towns", String.join("_", nations));
-        }
+            if (wardata.getString("nations") != null) {
+                List<String> nations = new LinkedList<>(Arrays.asList(wardata.getString("nations").split("_")));
+                if (!nations.contains(nation.toString())) {
+                    nations.remove(nation.toString());
+                    wardata.set("nations", String.join("_", nations));
+                }
+            } {wardata.set("nations", nation.toString());}
+        } else {wardata.set("nations", nation.toString());}
 
         try {
             wardata.save(warlist);
@@ -84,16 +97,20 @@ public class WarlistUtils {
     public static void RemoveNationfromWarList(UUID nation) {
         // prepare config
         YamlConfiguration wardata = new YamlConfiguration();
-        try {
-            wardata.load(warlist);
-        } catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
-        }
+        if (warlist.exists()) {
+            try {
+                wardata.load(warlist);
+            } catch (IOException | InvalidConfigurationException e) {
+                e.printStackTrace();
+            }
 
-        List<String> nations = new ArrayList<>(Arrays.asList(wardata.getString("nations").split("_")));
-        if (nations.contains(nation.toString())) {
-            nations.remove(nation.toString());
-            wardata.set("towns", String.join("_", nations));
+            if (wardata.getString("nations") != null) {
+                List<String> nations = new LinkedList<>(Arrays.asList(wardata.getString("nations").split("_")));
+                if (nations.contains(nation.toString())) {
+                    nations.remove(nation.toString());
+                    wardata.set("nations", String.join("_", nations));
+                }
+            }
         }
 
         try {
@@ -107,16 +124,20 @@ public class WarlistUtils {
         // prepare config
         boolean result = false;
         YamlConfiguration wardata = new YamlConfiguration();
-        try {
-            wardata.load(warlist);
-        } catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
-        }
+        if (warlist.exists()) {
+            try {
+                wardata.load(warlist);
+            } catch (IOException | InvalidConfigurationException e) {
+                e.printStackTrace();
+            }
 
-        List<String> wars = new ArrayList<>(Arrays.asList(wardata.getString("wars").split("_")));
-         if (wars.contains(town.getUuid().toString())) {
-             result = true;
-         }
+            if (wardata.getString("towns") != null) {
+                List<String> wars = new LinkedList<>(Arrays.asList(wardata.getString("towns").split("_")));
+                if (wars.contains(town.getUuid().toString())) {
+                    result = true;
+                }
+            }
+        }
          return result;
     }
 
@@ -124,15 +145,19 @@ public class WarlistUtils {
         // prepare config
         boolean result = false;
         YamlConfiguration wardata = new YamlConfiguration();
-        try {
-            wardata.load(warlist);
-        } catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
-        }
+        if (warlist.exists()) {
+            try {
+                wardata.load(warlist);
+            } catch (IOException | InvalidConfigurationException e) {
+                e.printStackTrace();
+            }
 
-        List<String> wars = new ArrayList<>(Arrays.asList(wardata.getString("nations").split("_")));
-        if (wars.contains(nation.getUuid().toString())) {
-            result = true;
+            if (wardata.getString("nations") != null) {
+                List<String> wars = new LinkedList<>(Arrays.asList(wardata.getString("nations").split("_")));
+                if (wars.contains(nation.getUuid().toString())) {
+                    result = true;
+                }
+            }
         }
         return result;
     }
