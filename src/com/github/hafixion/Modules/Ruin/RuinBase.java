@@ -27,8 +27,10 @@ public class RuinBase {
     public static File getFile(Town town) {
         File result = null;
         String filename = town.getUuid().toString() + ".yml";
-        for (File file : Arrays.asList(database.toFile().listFiles())) {
-            if (file.getName().equals(filename)) result = file;
+        if (database.toFile().listFiles() != null) {
+            for (File file : Arrays.asList(database.toFile().listFiles())) {
+                if (file.getName().equals(filename)) result = file;
+            }
         }
         return result;
     }
@@ -43,18 +45,20 @@ public class RuinBase {
     // purges towns older than whatever value is specificed in config
     public static void ClearExpiredRuinedTowns() {
         YamlConfiguration config = new YamlConfiguration();
-        for (File file : Arrays.asList(database.toFile().listFiles())) {
-            try {
-                config.load(file);
-                if (config.getLong("time") - System.currentTimeMillis() >= FeudalismMain.plugin.getConfig().getLong("time-till-expiration")) {
-                    Town town = TownyUniverse.getInstance().getDataSource().getTown(config.getString("uuid"));
-                    adminCommand.parseAdminTownCommand(new String[] {town.getName(), "delete"});
-                    Bukkit.broadcastMessage(ChatInfo.color("&b" + town.getName() + " has finally fallen into history."));
-                    //noinspection ResultOfMethodCallIgnored
-                    file.delete();
+        if (database.toFile().listFiles() != null) {
+            for (File file : Arrays.asList(database.toFile().listFiles())) {
+                try {
+                    config.load(file);
+                    if (config.getLong("time") - System.currentTimeMillis() >= FeudalismMain.plugin.getConfig().getLong("time-till-expiration")) {
+                        Town town = TownyUniverse.getInstance().getDataSource().getTown(config.getString("uuid"));
+                        adminCommand.parseAdminTownCommand(new String[]{town.getName(), "delete"});
+                        Bukkit.broadcastMessage(ChatInfo.color("&b" + town.getName() + " has finally fallen into history."));
+                        //noinspection ResultOfMethodCallIgnored
+                        file.delete();
+                    }
+                } catch (IOException | InvalidConfigurationException | TownyException e) {
+                    e.printStackTrace();
                 }
-            } catch (IOException | InvalidConfigurationException | TownyException e) {
-                e.printStackTrace();
             }
 
         }

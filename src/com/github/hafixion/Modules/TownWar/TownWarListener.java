@@ -207,6 +207,7 @@ public class TownWarListener implements Listener {
                        // minus warscore (adding to town) and making sure it doesn't exceed the max.
                        if (war.getKillscore() - FeudalismMain.plugin.getConfig().getInt("warscore-kill") < -(FeudalismMain.plugin.getConfig().getInt("warscore-kill-max"))) {
                            war.setWarscore(war.getWarscore() - FeudalismMain.plugin.getConfig().getInt("warscore-kill"));
+                           war.setKillscore(war.getKillscore() - FeudalismMain.plugin.getConfig().getInt("warscore-kill"));
                        } else {war.setKillscore(-50);}
                    }
                 } else {
@@ -227,6 +228,7 @@ public class TownWarListener implements Listener {
     // occupation momento
 
     @EventHandler
+    //todo fix this
     public void onPlotChange(PlayerChangePlotEvent event) throws NotRegisteredException {
         Resident resident = TownyUniverse.getInstance().getDataSource().getResident(event.getPlayer().getName());
         if (resident.hasTown() && WarlistUtils.isTownAtWar(resident.getTown()) && event.getTo().hasTownBlock()) {

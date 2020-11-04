@@ -46,7 +46,7 @@ public class TownWar {
         filedata.set("attacker", nation.getUuid().toString());
         filedata.set("defender", town.getUuid().toString());
         filedata.set("warscore", 0);
-        filedata.set("time", time);
+        filedata.set("time", System.currentTimeMillis());
         filedata.set("killscore", 0);
 
         try {
