@@ -3,13 +3,11 @@ package com.github.hafixion.Modules.Ruin.Events;
 import com.github.hafixion.FeudalismMain;
 import com.github.hafixion.Modules.Ruin.RuinBase;
 import com.github.hafixion.Utils.ChatInfo;
-import com.github.hafixion.Utils.FileUtils;
 import com.palmergames.bukkit.towny.command.TownyAdminCommand;
 import com.palmergames.bukkit.towny.exceptions.TownyException;
 import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.Town;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
@@ -99,7 +97,7 @@ public class RuinEvent extends Event implements Cancellable {
             System.out.println("Problem propagating perm changes to individual plots");
             e.printStackTrace();
         }
-        Bukkit.broadcastMessage(ChatInfo.color("&c" + town.getName() + " has become a ruined town!"));
+        Bukkit.broadcastMessage(ChatInfo.prefix("&c" + town.getName() + " has become a ruined town!"));
     }
 
     public static Town getTown() {

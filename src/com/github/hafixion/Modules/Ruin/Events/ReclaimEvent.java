@@ -59,7 +59,7 @@ public class ReclaimEvent extends Event implements Cancellable {
                 RuinBase.ClearNPCs();
                 town.setBoard(resident.getTown().getName() + " has returned under the leadership of " + resident.getName());
                 town.setPVP(false);
-                Bukkit.broadcastMessage(ChatInfo.color("&b" + town.getName() + " has returned under the leadership of " + resident.getName()));
+                Bukkit.broadcastMessage(ChatInfo.prefix("&b" + town.getName() + " has returned under the leadership of " + resident.getName()));
             }
         } catch (TownyException e) {
             e.printStackTrace();

@@ -1,7 +1,6 @@
 package com.github.hafixion.Modules.TownWar.Events;
 
 import com.github.hafixion.Modules.TownWar.TownWar;
-import com.github.hafixion.Modules.TownWar.TownWarBase;
 import com.github.hafixion.Utils.ChatInfo;
 import com.github.hafixion.Utils.WarlistUtils;
 import com.palmergames.bukkit.towny.object.Nation;
@@ -21,7 +20,7 @@ public class twTownVictoryEvent extends Event {
         this.war = townwar;
         Nation nation = townwar.getNation();
         Town town = townwar.getTown();
-        Bukkit.broadcastMessage(ChatInfo.color("&b" + townwar.getTown().getName() + " has successfully resisted " + townwar.getNation().getName()));
+        Bukkit.broadcastMessage(ChatInfo.prefix("&b" + townwar.getTown().getName() + " has successfully resisted " + townwar.getNation().getName()));
 
         File file = townwar.getFile();
         file.delete();

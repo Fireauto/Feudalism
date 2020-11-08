@@ -34,10 +34,10 @@ public class RuinCommands {
                                 }
                             }).setTitle("§bAre you sure you want to reclaim " + resident.getTown() + "?").sendTo(sender);
                         } else {
-                            sender.sendMessage(ChatInfo.color("&cYou don't have a town, or your town isn't ruined."));
+                            sender.sendMessage(ChatInfo.prefix("&cYou don't have a town, or your town isn't ruined."));
                         }
                     } else {
-                        sender.sendMessage(ChatInfo.color("&cReclaiming is disabled."));
+                        sender.sendMessage(ChatInfo.prefix("&cReclaiming is disabled."));
                     }
                     break;
 
@@ -59,35 +59,35 @@ public class RuinCommands {
                                                         event = new ReclaimEvent(town, resident);
                                                         if (!event.isCancelled())
                                                             FeudalismMain.plugin.getServer().getPluginManager().callEvent(event);
-                                                    }).setTitle("§2" + sender.getName() + " wants you to reclaim " + town.getName() + " for the nation.").runOnCancel(() -> sender.sendMessage(ChatInfo.color("&b" + newmayor.getName() + " refused your suggestion"))).sendTo(newmayor.getPlayer())).setTitle("§bAre you sure you want " + args[1] + " to reclaim " + args[2]).sendTo(sender);
+                                                    }).setTitle("§2" + sender.getName() + " wants you to reclaim " + town.getName() + " for the nation.").runOnCancel(() -> sender.sendMessage(ChatInfo.prefix("&b" + newmayor.getName() + " refused your suggestion"))).sendTo(newmayor.getPlayer())).setTitle("§bAre you sure you want " + args[1] + " to reclaim " + args[2]).sendTo(sender);
                                                     // under this is all the responses if an argument is wrong.
                                                 } else {
-                                                    sender.sendMessage(ChatInfo.color("&c" + args[2] + " is not ruined."));
+                                                    sender.sendMessage(ChatInfo.prefix("&c" + args[2] + " is not ruined."));
                                                 }
                                             } else {
-                                                sender.sendMessage(ChatInfo.color("&c" + args[2] + " is not in your nation."));
+                                                sender.sendMessage(ChatInfo.prefix("&c" + args[2] + " is not in your nation."));
                                             }
                                         } else {
-                                            sender.sendMessage(ChatInfo.color("&c" + args[2] + " is not registered."));
+                                            sender.sendMessage(ChatInfo.prefix("&c" + args[2] + " is not registered."));
                                         }
                                     } else {
-                                        sender.sendMessage(ChatInfo.color("&c" + args[1] + " is not online."));
+                                        sender.sendMessage(ChatInfo.prefix("&c" + args[1] + " is not online."));
                                     }
                                 } else {
-                                    sender.sendMessage(ChatInfo.color("&cYou don't have a nation or a town."));
+                                    sender.sendMessage(ChatInfo.prefix("&cYou don't have a nation or a town."));
                                 }
                             } else {
-                                sender.sendMessage(ChatInfo.color("&cYou don't have enough permissions."));
+                                sender.sendMessage(ChatInfo.prefix("&cYou don't have enough permissions."));
                             }
                         } else {
-                            sender.sendMessage(ChatInfo.color("&cNot enough arguments."));
+                            sender.sendMessage(ChatInfo.prefix("&cNot enough arguments."));
                         }
                     } else {
-                        sender.sendMessage(ChatInfo.color("&cNation Reclaiming is disabled."));
+                        sender.sendMessage(ChatInfo.prefix("&cNation Reclaiming is disabled."));
                     }
                     break;
                 default:
-                    sender.sendMessage(ChatInfo.color("&c is not registered."));
+                    sender.sendMessage(ChatInfo.prefix("&c is not registered."));
                     break;
             }
         } catch (NotRegisteredException e) {

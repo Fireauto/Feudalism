@@ -35,12 +35,12 @@ public class TownWarListener implements Listener {
 
         if (WarlistUtils.isTownAtWar(TownyUniverse.getInstance().getDataSource().getTown(event.getPlayer().getName()))) {
             event.setCancelled(true);
-            event.getPlayer().sendMessage(ChatInfo.color("&cYou cannot teleport while at war."));
+            event.getPlayer().sendMessage(ChatInfo.prefix("&cYou cannot teleport while at war."));
         }
 
         if (WarlistUtils.isTownAtWar(event.getToTown())) {
             event.setCancelled(true);
-            event.getPlayer().sendMessage(ChatInfo.color("&c" + event.getToTown().getName() + " is currently at war."));
+            event.getPlayer().sendMessage(ChatInfo.prefix("&c" + event.getToTown().getName() + " is currently at war."));
         }
 
     }
@@ -50,12 +50,12 @@ public class TownWarListener implements Listener {
 
         if (WarlistUtils.isTownAtWar(TownyUniverse.getInstance().getDataSource().getTown(event.getPlayer().getName()))) {
             event.setCancelled(true);
-            event.getPlayer().sendMessage(ChatInfo.color("&cYou cannot teleport while at war."));
+            event.getPlayer().sendMessage(ChatInfo.prefix("&cYou cannot teleport while at war."));
         }
 
         if (WarlistUtils.isNationAtWar(event.getToNation())) {
             event.setCancelled(true);
-            event.getPlayer().sendMessage(ChatInfo.color("&c" + event.getToNation().getName() + " is currently at war."));
+            event.getPlayer().sendMessage(ChatInfo.prefix("&c" + event.getToNation().getName() + " is currently at war."));
         }
 
     }
@@ -66,7 +66,7 @@ public class TownWarListener implements Listener {
 
         if (WarlistUtils.isTownAtWar(event.getInvite().getReceiver())) {
             event.getInvite().decline(true);
-            event.getInvite().getDirectSender().sendMessage(ChatInfo.color("&c" + event.getInvite().getReceiver().getName() + " is at war, they cannot join a town at this time."));
+            event.getInvite().getDirectSender().sendMessage(ChatInfo.prefix("&c" + event.getInvite().getReceiver().getName() + " is at war, they cannot join a town at this time."));
         }
 
     }
@@ -109,7 +109,7 @@ public class TownWarListener implements Listener {
             isMerging = false;
             for (UUID uuid : TownWarBase.getDefenders(event.getNationUUID())) {
                 Town town = TownyUniverse.getInstance().getDataSource().getTown(uuid);
-                TownyMessaging.sendGlobalMessage(ChatInfo.color("&b" + event.getNationName() + " has collapsed, " + town.getName() + " is now at peace."));
+                TownyMessaging.sendGlobalMessage(ChatInfo.prefix("&b" + event.getNationName() + " has collapsed, " + town.getName() + " is now at peace."));
                 TownWarBase.getWarFilefromTowny(event.getNationUUID(), town.getUuid()).delete();
                 WarlistUtils.RemoveTownfromWarList(uuid);
             }
@@ -143,11 +143,14 @@ public class TownWarListener implements Listener {
                     WarlistUtils.AddTowntoWarList(town.getUuid());
                 }
             }
-            Bukkit.broadcastMessage(ChatInfo.color("&b" + event.getRemainingnation().getName() + " has inherited all of " + event.getNation().getName() + "'s wars."));
+            WarlistUtils.AddNationtoWarList(event.getRemainingnation().getUuid());
+            WarlistUtils.RemoveNationfromWarList(event.getNation().getUuid());
+            Bukkit.broadcastMessage(ChatInfo.prefix("&b" + event.getRemainingnation().getName() + " has inherited all of " + event.getNation().getName() + "'s wars."));
         }
     }
 
     @EventHandler
+    //todo fix this
     public void onTownRuin(RuinEvent event) throws NotRegisteredException, IOException, InvalidConfigurationException {
         int warscore = 0;
         Town town = event.getTown();
@@ -181,7 +184,7 @@ public class TownWarListener implements Listener {
     public void onPreNewNation(PreNewNationEvent event) {
         if (WarlistUtils.isTownAtWar(event.getTown())) {
             event.setCancelled(true);
-            event.getTown().getMayor().getPlayer().sendMessage(ChatInfo.color("&cCannot create a nation while at war."));
+            event.getTown().getMayor().getPlayer().sendMessage(ChatInfo.prefix("&cCannot create a nation while at war."));
         }
     }
 

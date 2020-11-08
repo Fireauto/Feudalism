@@ -52,7 +52,7 @@ public class RuinBase {
                     if (config.getLong("time") - System.currentTimeMillis() >= FeudalismMain.plugin.getConfig().getLong("time-till-expiration")) {
                         Town town = TownyUniverse.getInstance().getDataSource().getTown(config.getString("uuid"));
                         adminCommand.parseAdminTownCommand(new String[]{town.getName(), "delete"});
-                        Bukkit.broadcastMessage(ChatInfo.color("&b" + town.getName() + " has finally fallen into history."));
+                        Bukkit.broadcastMessage(ChatInfo.prefix("&b" + town.getName() + " has finally fallen into history."));
                         //noinspection ResultOfMethodCallIgnored
                         file.delete();
                     }

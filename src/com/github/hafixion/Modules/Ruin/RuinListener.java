@@ -26,8 +26,8 @@ public class RuinListener implements Listener {
     // when a town falls into ruin, ask the king to set a new mayor
     public static void onTownRuin(RuinEvent event) {
         try {
-            if (event.getTown().hasNation() && event.getTown().getNation().getKing().getPlayer().isOnline()) {
-                event.getTown().getNation().getKing().getPlayer().sendMessage(ChatInfo.color("&b" + event.getTown() + " has fallen into ruin, you should assign a mayor before it disappears."));
+            if (event.getTown().hasNation()) {
+                event.getTown().getNation().getKing().getPlayer().sendMessage(ChatInfo.prefix("&b" + event.getTown() + " has fallen into ruin, you should assign a mayor before it disappears."));
             }
         } catch (NotRegisteredException e) {
             e.printStackTrace();

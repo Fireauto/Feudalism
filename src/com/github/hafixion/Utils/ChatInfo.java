@@ -7,9 +7,14 @@ public class ChatInfo {
 
     private final static int CENTER_PX = 154;
 
-    // send regular translated color codes
-    public static String color(String text) {
+    // send regular translated color codes with prefix
+    public static String prefix(String text) {
         return ChatColor.translateAlternateColorCodes('&', "&6[Feudalism]&r " + text);
+    }
+
+    // send translated color code
+    public static String color(String text) {
+        return ChatColor.translateAlternateColorCodes('&', text);
     }
 
     // open source code for sending a centered message

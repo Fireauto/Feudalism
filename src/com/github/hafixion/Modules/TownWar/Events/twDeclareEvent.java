@@ -65,7 +65,7 @@ public class twDeclareEvent extends Event implements Cancellable {
         }
 
         WarlistUtils.AddNationtoWarList(nation.getUuid());
-        Bukkit.broadcastMessage(ChatInfo.color("&b" + nation.getName() + " has declared war on " + town.getName() + " with intent to conquer"));
+        Bukkit.broadcastMessage(ChatInfo.prefix("&b" + nation.getName() + " has declared war on " + town.getName() + " with intent to conquer"));
     }
 
     // mandatory stuff ignore

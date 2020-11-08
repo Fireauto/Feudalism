@@ -1,7 +1,6 @@
 package com.github.hafixion.Modules.TownWar.Events;
 
 import com.github.hafixion.Modules.TownWar.TownWar;
-import com.github.hafixion.Modules.TownWar.TownWarBase;
 import com.github.hafixion.Utils.ChatInfo;
 import com.github.hafixion.Utils.WarlistUtils;
 import com.palmergames.bukkit.towny.object.Nation;
@@ -22,7 +21,7 @@ public class twNationVictoryEvent extends Event {
         Nation nation = townwar.getNation();
         Town town = townwar.getTown();
         townwar.getNation().addTown(townwar.getTown());
-        Bukkit.broadcastMessage(ChatInfo.color("&b" + townwar.getNation().getName() + " has successfully subjugated " + townwar.getTown().getName()));
+        Bukkit.broadcastMessage(ChatInfo.prefix("&b" + townwar.getNation().getName() + " has successfully subjugated " + townwar.getTown().getName()));
 
         File file = townwar.getFile();
         file.delete();

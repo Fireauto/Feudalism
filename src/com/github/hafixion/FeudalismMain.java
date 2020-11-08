@@ -20,17 +20,17 @@ public class FeudalismMain extends JavaPlugin {
         setPlugin(this);
         // if towny is loaded then enable the plugin
         if (getServer().getPluginManager().getPlugin("Towny").isEnabled()) {
-            getServer().getConsoleSender().sendMessage(ChatInfo.color("&a Plugin Loaded Successfully"));
+            getServer().getConsoleSender().sendMessage(ChatInfo.prefix("&a Plugin Loaded Successfully"));
             register();
         } else {
-            getServer().getConsoleSender().sendMessage(ChatInfo.color("&c Towny not enabled, unloading plugin"));
+            getServer().getConsoleSender().sendMessage(ChatInfo.prefix("&c Towny not enabled, unloading plugin"));
             this.getPluginLoader().disablePlugin(this);
         }
     }
 
     @Override
     public void onDisable() {
-        getServer().getConsoleSender().sendMessage(ChatInfo.color("&c Plugin Unloaded Successfully"));
+        getServer().getConsoleSender().sendMessage(ChatInfo.prefix("&c Plugin Unloaded Successfully"));
     }
 
     // register functions

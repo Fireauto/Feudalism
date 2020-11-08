@@ -8,10 +8,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class FeudalismCommand implements CommandExecutor {
 
@@ -28,7 +25,7 @@ public class FeudalismCommand implements CommandExecutor {
                     TownWarCommands.exec(commandSender, newargs);
                     break;
                 default:
-                    commandSender.sendMessage(ChatInfo.color("&c" + args[0] + " is not a valid argument."));
+                    commandSender.sendMessage(ChatInfo.prefix("&c" + args[0] + " is not a valid argument."));
                     break;
 
             }
@@ -39,11 +36,14 @@ public class FeudalismCommand implements CommandExecutor {
     }
 
     public static class FeudalismTabCompleter implements TabCompleter {
-        public static List<String> tab = new ArrayList<>(Arrays.asList("ruin-townwar".split("-")));
 
         @Override
         public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
-            List<String> result = Collections.singletonList("");
+            List<String> tab = new LinkedList<>();
+            List<String> result = null;
+
+            tab.add("ruin");
+            tab.add("townwar");
 
             // args[0] tab completer
             if (strings.length == 1) {
